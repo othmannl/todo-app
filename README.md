@@ -45,11 +45,7 @@ composer install
    This will:
    - Create a database named `tasks_db`.
    - Create a table named `tasks` with the necessary structure.
-
-2. Alternatively, you can manually create the database:
-   - Import the SQL file `database.sql` (if provided) into your database.
-   - Use tools like phpMyAdmin or MySQL CLI for this step.
-
+   - Create a users table to manage user accounts.
 ---
 
 ### 4. Configure the Database
