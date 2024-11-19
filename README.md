@@ -1,35 +1,34 @@
-```markdown
 # To-Do App by Othman NL
 
-A simple To-Do application built with PHP and MySQL, featuring task creation, completion, and deletion functionalities. Includes email notifications using PHPMailer for task creation.
+This is a simple yet functional To-Do application built with PHP and MySQL. It allows users to manage their tasks effectively by adding, completing, and deleting them. Additionally, the app sends email notifications whenever a new task is created, using PHPMailer.
 
 ---
 
 ## Features
-- Add tasks to your to-do list.
+- Add new tasks to your to-do list.
 - Mark tasks as completed.
 - Delete tasks from the list.
-- View separate lists for open and completed tasks.
-- Email notification when a task is created.
+- View tasks separately: open tasks and completed tasks.
+- Get an email notification each time a new task is added.
 
 ---
 
 ## Requirements
-- PHP 7.4 or higher
-- MySQL
-- A web server (e.g., XAMPP, WAMP, or MAMP)
-- Composer (for managing dependencies)
+To run this application, you need the following:
+- **PHP**: Version 7.4 or higher.
+- **MySQL**: For the database.
+- **Web server**: Such as XAMPP, WAMP, or MAMP.
+- **Composer**: To manage dependencies (optional if already configured).
 
 ---
 
 ## Installation
 
 ### 1. Clone the Repository
-Clone this project to your local machine using Git:
+Clone this project to your local machine using the following commands:
 ```bash
 git clone git@github.com:yourusername/todo-app.git
 cd todo-app
-```
 
 ### 2. Install Dependencies
 Install the required dependencies using Composer:
