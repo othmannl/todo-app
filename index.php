@@ -1,5 +1,6 @@
 <?php
 include 'db.php';
+include 'send_mailer.php';
 
 // Check if logged in
 session_start();
@@ -16,6 +17,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bind_param('s', $task_name);
         $stmt->execute();
         $stmt->close();
+
+        $to = "mail@domain.com";
+        $subject =  "New Task Made";
+        $body =   "The task: $task_name is created for you.";
+        sendEmail($to, $subject, $body);
     }
 }
 
