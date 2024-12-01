@@ -35,13 +35,27 @@ try {
     $userTableSQL = "
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 ";
     $pdo->exec($userTableSQL);
     echo "Table 'users' created successfully or already exists.\n";
+
+    // SQL to create the `password_resets` table
+    $passwordResetTableSQL  = "
+    CREATE TABLE IF NOT EXISTS password_resets(
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        email VARCHAR(50) NOT NULL,
+        token VARCHAR(255) NOT NULL,
+        expires_at DATETIME NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (email) REFERENCES users(email) ON DELETE CASCADE
+    )";
+
+    $pdo->exec($passwordResetTableSQL);
+    echo "Table 'password_resets' created successfully or already exists.\n";
 
     echo "Database setup completed! You can now run the application.\n";
 } catch (PDOException $e) {

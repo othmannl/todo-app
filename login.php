@@ -3,11 +3,11 @@ session_start();
 include 'db.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST['username'];
+    $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $stmt = $conn->prepare("SELECT id, password FROM users WHERE username = ?");
-    $stmt->bind_param('s', $username);
+    $stmt = $conn->prepare("SELECT id, password FROM users WHERE email = ?");
+    $stmt->bind_param('s', $email);
     $stmt->execute();
     $stmt->store_result();
     $stmt->bind_result($user_id, $hashed_password);
@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['user_id'] = $user_id;
         header("Location: index.php");
     } else {
-        echo "Invalid username or password";
+        echo "Invalid email or password";
     }
 
     $stmt->close();
@@ -37,8 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <h1 class="text-center">Login</h1>
     <form action="login.php" method="POST">
         <div class="mb-3">
-            <label for="username" class="form-label">Username</label>
-            <input type="text" class="form-control" id="username" name="username" required>
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" required>
         </div>
         <div class="mb-3">
             <label for="password" class="form-label">Password</label>
@@ -46,6 +46,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <button type="submit" class="btn btn-primary w-100">Login</button>
     </form>
+    <div class="text-center mt-3">
+        <p><a href="forgot-password.php">Forgot Password?</a></p>
+    </div>
     <div class="text-center mt-3">
         <p>Don't have an account? <a href="register.php">Register here</a></p>
     </div>
