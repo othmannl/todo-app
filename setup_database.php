@@ -17,20 +17,6 @@ try {
     // Select the new database
     $pdo->exec("USE " . DB_NAME);
 
-    // SQL to create the `tasks` table
-    $tableSQL = "
-    CREATE TABLE IF NOT EXISTS tasks (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        task_name VARCHAR(255) NOT NULL,
-        is_completed BOOLEAN DEFAULT FALSE,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    );
-    ";
-
-    // Execute the SQL
-    $pdo->exec($tableSQL);
-    echo "Table 'tasks' created successfully or already exists.\n";
-
     // SQL to create the `users` table
     $userTableSQL = "
 CREATE TABLE IF NOT EXISTS users (
@@ -42,6 +28,22 @@ CREATE TABLE IF NOT EXISTS users (
 ";
     $pdo->exec($userTableSQL);
     echo "Table 'users' created successfully or already exists.\n";
+
+    // SQL to create the `tasks` table
+    $tableSQL = "
+    CREATE TABLE IF NOT EXISTS tasks (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        task_name VARCHAR(255) NOT NULL,
+        is_completed BOOLEAN DEFAULT FALSE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    );
+    ";
+
+    // Execute the SQL
+    $pdo->exec($tableSQL);
+    echo "Table 'tasks' created successfully or already exists.\n";
 
     // SQL to create the `password_resets` table
     $passwordResetTableSQL  = "

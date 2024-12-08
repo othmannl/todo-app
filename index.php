@@ -12,9 +12,11 @@ if (!isset($_SESSION['user_id'])) {
 // Add new task
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $task_name = $_POST['task_name'];
+    $user_id = $_SESSION['user_id'];
+
     if (!empty($task_name)) {
-        $stmt = $conn->prepare("INSERT INTO tasks (task_name) VALUES (?)");
-        $stmt->bind_param('s', $task_name);
+        $stmt = $conn->prepare("INSERT INTO tasks (task_name, user_id) VALUES (?, ?)");
+        $stmt->bind_param('si', $task_name, $user_id);
         $stmt->execute();
         $stmt->close();
 
@@ -26,8 +28,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Get open and closed tasks
-$open_tasks = $conn->query("SELECT * FROM tasks WHERE is_completed = 0");
-$completed_tasks = $conn->query("SELECT * FROM tasks WHERE is_completed = 1");
+
+$user_id = $_SESSION['user_id'];
+
+$open_tasks = $conn->prepare("SELECT * FROM tasks WHERE is_completed = 0 AND user_id = ?");
+$open_tasks->bind_param('i', $user_id);
+$open_tasks->execute();
+$open_tasks_result = $open_tasks->get_result();
+
+
+$completed_tasks = $conn->prepare("SELECT * FROM tasks WHERE is_completed = 1 AND user_id = ?");
+$completed_tasks->bind_param('i', $user_id);
+$completed_tasks->execute();
+$completed_tasks_result = $completed_tasks->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -81,8 +94,8 @@ $completed_tasks = $conn->query("SELECT * FROM tasks WHERE is_completed = 1");
         <div class="col-md-6">
             <h2 class="text-center">Open Tasks</h2>
             <ul class="list-group">
-                <?php if ($open_tasks->num_rows > 0): ?>
-                    <?php while ($row = $open_tasks->fetch_assoc()): ?>
+                <?php if ($open_tasks_result->num_rows > 0): ?>
+                    <?php while ($row = $open_tasks_result->fetch_assoc()): ?>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <?php echo $row['task_name']; ?>
                             <div>
@@ -101,8 +114,8 @@ $completed_tasks = $conn->query("SELECT * FROM tasks WHERE is_completed = 1");
         <div class="col-md-6">
             <h2 class="text-center">Completed Tasks</h2>
             <ul class="list-group">
-                <?php if ($completed_tasks->num_rows > 0): ?>
-                    <?php while ($row = $completed_tasks->fetch_assoc()): ?>
+                <?php if ($completed_tasks_result->num_rows > 0): ?>
+                    <?php while ($row = $completed_tasks_result->fetch_assoc()): ?>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <?php echo $row['task_name']; ?>
                             <div>
